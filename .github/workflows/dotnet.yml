@@ -24,7 +24,7 @@ jobs:
 
     - name: Stop running app (kill by port)
       run: |
-        $port=5050
+        $port=5000
         $process = Get-NetTCPConnection -LocalPort $port -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess
         if ($process) {
             Stop-Process -Id $process -Force
