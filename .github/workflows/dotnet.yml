@@ -22,12 +22,15 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
 
-    - name: Stop running app
+    - name: Stop running app (kill by port)
       run: |
-        try {
-          taskkill /IM dotnet.exe /F
-        } catch {
-          Write-Output "No process running"
+        $port=5050
+        $process = Get-NetTCPConnection -LocalPort $port -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess
+        if ($process) {
+            Stop-Process -Id $process -Force
+            Write-Output "Stopped process using port $port"
+        } else {
+            Write-Output "No process running on port $port"
         }
 
     - name: Publish to local folder
@@ -35,5 +38,5 @@ jobs:
 
     - name: Start application
       run: |
-        $env:ASPNETCORE_URLS="http://localhost:5050"
+        $env:ASPNETCORE_URLS="http://localhost:5000"
         Start-Process dotnet "C:\deploy\app\cicddemo.dll"
