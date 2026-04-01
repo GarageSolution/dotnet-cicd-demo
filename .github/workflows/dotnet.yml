@@ -24,11 +24,15 @@ jobs:
 
     - name: Stop running app
       run: |
-        taskkill /IM dotnet.exe /F || echo "No process running"
+        try {
+          taskkill /IM dotnet.exe /F
+        } catch {
+          Write-Output "No process running"
+        }
 
     - name: Publish to local folder
       run: dotnet publish -c Release -o C:\deploy\app
 
     - name: Start application
       run: |
-        start dotnet C:\deploy\app\cicddemo.dll
+        Start-Process dotnet "C:\deploy\app\cicddemo.dll"
