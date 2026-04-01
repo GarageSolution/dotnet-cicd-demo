@@ -35,4 +35,5 @@ jobs:
 
     - name: Start application
       run: |
+        $env:ASPNETCORE_URLS="http://localhost:5050"
         Start-Process dotnet "C:\deploy\app\cicddemo.dll"
