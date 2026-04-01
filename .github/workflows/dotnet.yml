@@ -1,4 +1,4 @@
-name: .NET CI Pipeline
+name: .NET CI-CD Pipeline
 
 on:
   push:
@@ -6,7 +6,8 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+
+    runs-on: self-hosted
 
     steps:
     - name: Checkout Code
@@ -15,7 +16,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '6.0.x'   # change if your project uses 7 or 8
+        dotnet-version: '6.0.x'
 
     - name: Restore
       run: dotnet restore
@@ -25,12 +26,6 @@ jobs:
 
     - name: Test
       run: dotnet test --no-build --verbosity normal
-      
-    - name: Publish project
-      run: dotnet publish -c Release -o publish
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: dotnet-app
-        path: publish
+    - name: Publish to local folder
+      run: dotnet publish -c Release -o C:\deploy\app
