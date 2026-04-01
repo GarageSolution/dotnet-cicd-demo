@@ -34,9 +34,10 @@ jobs:
         }
 
     - name: Publish to local folder
-      run: dotnet publish -c Release -o C:\deploy\app
-
+      run: dotnet publish -c Release -o C:\deploy\app 
+      
     - name: Start application
       run: |
-        $env:ASPNETCORE_URLS="http://localhost:5000"
-        Start-Process dotnet "C:\deploy\app\cicddemo.dll"
+          cd C:\deploy\app
+          $env:ASPNETCORE_URLS="http://localhost:5000"
+          Start-Process dotnet -ArgumentList "cicddemo.dll" -WorkingDirectory "C:\deploy\app" -NoNewWindow
